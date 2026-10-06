@@ -1,16 +1,13 @@
 # Mini Banking: projeto de sistema seguro
 
 Aplicação simples e funcional que implementa as decisões do documento
-**"Projeto de Sistema Seguro: Internet Banking"** (CESAR School, Cibersegurança
-Aplicada a Dados e IA). O foco não é ter muitas funções, e sim **mostrar que cada
-proteção projetada funciona**: cada uma tem um teste automatizado.
-
+**"Projeto de Sistema Seguro: Internet Banking"**
 O que o sistema faz: login (senha + código do autenticador), saldo, extrato,
 transferência entre contas (com nova confirmação por código) e um log de
 auditoria para o perfil de auditor.
 
-> Projeto acadêmico. Use apenas dados fictícios.
-
+> Projeto acadêmico.
+> 
 ## Como rodar
 
 Testado com Python 3.13; deve funcionar a partir do 3.10.
@@ -76,29 +73,3 @@ run.py            sobe tudo em https://localhost:8443
 tests/            51 testes de segurança
 ```
 
-## O que difere do documento, e limites
-
-Para ser honesto sobre o que foi construído (e para o documento e o app não se contradizerem):
-
-- **Log de auditoria:** o documento diz que ninguém consegue apagar. O app implementa
-  algo mais modesto e mais correto: o log é *resistente a adulteração*, ou seja, editar
-  ou remover um registro do meio é **detectado**. Quem tem acesso total ao banco ainda
-  poderia apagar os últimos registros ou refazer a cadeia inteira; evitar isso exigiria
-  guardar o hash final fora do banco (por exemplo, em armazenamento só de escrita).
-- **Cofre de chaves (KMS):** aqui é um arquivo `secrets/keys.json` fora do banco. É um
-  substituto simples; não há rotação automática de chaves.
-- **"Assinatura da operação":** é um selo HMAC com chave do servidor. Detecta alteração
-  no banco, mas não é assinatura digital assimétrica (ECDSA) e não prova autoria perante o cliente.
-- **ECC:** aparece no certificado TLS (ECDSA P-256) e na troca de chaves do TLS, não na
-  lógica do app.
-- **TLS:** o servidor negocia TLS 1.3 por padrão e também aceita TLS 1.2. O código não
-  impõe uma versão mínima; isso depende do Python e do OpenSSL instalados.
-- **MFA:** TOTP. Passkeys (preferidas no documento) não foram implementadas.
-- **Backups (regra 3-2-1) e Pix:** não implementados. Backup é medida de infraestrutura,
-  e o app só tem transferência entre contas.
-- **Não protegido:** reutilização do mesmo código TOTP dentro da janela de validade,
-  limite de tentativas por IP (o bloqueio é por conta, o que permite bloquear a conta de
-  outra pessoa de propósito), CSRF na tela de login, lista grande de senhas vazadas
-  (a lista do projeto é só um exemplo).
-- **Não foi testado por terceiros:** os testes são do próprio projeto. Segurança
-  absoluta não existe; o objetivo é mostrar que cada proteção projetada funciona.
