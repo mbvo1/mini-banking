@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}Auditoria · Mini Banking{% endblock %}
+{% block content %}
+<h1>Log de auditoria</h1>
+
+{% if chain_ok %}
+<p class="alert ok" role="status">Cadeia de hashes íntegra: nenhuma alteração detectada.</p>
+{% else %}
+<p class="alert error" role="alert">Cadeia de hashes quebrada a partir do registro {{ bad_id }}: possível adulteração.</p>
+{% endif %}
+
+<section class="card">
+  <table>
+    <thead>
+      <tr><th>#</th><th>Data</th><th>Usuário (id)</th><th>Evento</th><th>Detalhe</th></tr>
+    </thead>
+    <tbody>
+      {% for e in entries %}
+      <tr>
+        <td>{{ e.id }}</td>
+        <td>{{ e.ts|dt }}</td>
+        <td>{{ e.user_id if e.user_id is not none else "-" }}</td>
+        <td>{{ e.event }}</td>
+        <td>{{ e.detail }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Erro {{ status }} · Mini Banking{% endblock %}
+{% block content %}
+<section class="card narrow">
+  <h1>Erro {{ status }}</h1>
+  <p>{{ message }}</p>
+  <p><a href="/">Voltar ao início</a></p>
+</section>
+{% endblock %}

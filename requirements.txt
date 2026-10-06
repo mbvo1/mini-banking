@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+jinja2
+bcrypt
+cryptography
+python-multipart
+httpx
+pytest
